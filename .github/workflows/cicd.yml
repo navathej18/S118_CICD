@@ -46,3 +46,4 @@ jobs:
           git config --global user.email "navathej101@gmail.com"    # ✅ Use your GitHub email
           npm install -g gh-pages
           gh-pages -d dist -r https://x-access-token:${GITHUB_TOKEN}@github.com/navathej18/S118_CICD.git   # ✅ FIXED repo URL
+          
