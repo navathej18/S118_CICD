@@ -1,0 +1,49 @@
+name: CI/CD React App
+
+on:
+  push:
+    branches: [main]  # 🔁 CHANGED from 'master' to 'main' (your actual branch)
+  pull_request:
+    branches: [main]  # 🔁 CHANGED from 'master' to 'main'
+
+permissions:
+  contents: write  
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test --if-present
+
+      - name: Build the project
+        run: npm run build
+
+      # Configure Git identity
+      - name: Configure Git
+        run: |
+          git config --global user.name "navathej18"                # ✅ FIXED username
+          git config --global user.email "navathej101@gmail.com"    # ✅ Use your GitHub email
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "navathej18"                # ✅ FIXED username
+          git config --global user.email "navathej101@gmail.com"    # ✅ Use your GitHub email
+          npm install -g gh-pages
+          gh-pages -d dist -r https://x-access-token:${GITHUB_TOKEN}@github.com/navathej18/S118_CICD.git   # ✅ FIXED repo URL
+          
